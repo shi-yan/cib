@@ -54,7 +54,7 @@ set(LLVM_LIBRARIES
     LLVMWebAssemblyDesc
     LLVMWebAssemblyInfo
     LLVMGlobalISel
-    LLVMWebAssemblyAsmPrinter
+    #LLVMWebAssemblyAsmPrinter
     LLVMAsmPrinter
     LLVMDebugInfoCodeView
     LLVMSelectionDAG
