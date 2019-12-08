@@ -55,6 +55,8 @@ set(LLVM_LIBRARIES
     LLVMWebAssemblyInfo
     LLVMGlobalISel
     #LLVMWebAssemblyAsmPrinter
+    #LLVMInitializeWebAssemblyAsmParser
+    LLVMWebAssemblyAsmParser
     LLVMAsmPrinter
     LLVMDebugInfoCodeView
     LLVMSelectionDAG
@@ -164,8 +166,8 @@ add_executable (cib-link cib-link.cpp wasm-tools.cpp)
 add_executable (cib-ar cib-ar.cpp wasm-tools.cpp)
 add_executable (combine-data combine-data.cpp wasm-tools.cpp)
 add_executable (clang-format clang-format.cpp)
-add_executable (clang clang.cpp wasm-tools.cpp)
-add_executable (clang-eos clang.cpp wasm-tools.cpp)
+add_executable (clang clang2.cpp wasm-tools.cpp)
+add_executable (clang-eos clang.cpp)# wasm-tools.cpp)
 add_executable (runtime runtime.cpp cxa_new_delete.cpp)
 
 target_compile_options(cib-link PRIVATE -stdlib=libc++)
@@ -203,20 +205,20 @@ IF(EMSCRIPTEN)
 
     target_compile_options(clang PRIVATE
         -DLIB_PREFIX=/usr/
-        -DxFAKE_COMPILE
+	#-DxFAKE_COMPILE
     )
     target_link_libraries(clang PRIVATE
-        "--preload-file usr"
-        "--no-heap-copy"
-        "-s MODULARIZE=1"
-        "-s ALLOW_MEMORY_GROWTH=1"
+        "--embed-file usr"
+	 "--no-heap-copy"
+	#"-s MODULARIZE=1"
+	#"-s ALLOW_MEMORY_GROWTH=1"
         #"-s DEMANGLE_SUPPORT=1"
         #"-s NO_EXIT_RUNTIME=1"
-        "-s EXPORTED_FUNCTIONS='[\"_main\", \"_compile\"]'"
+	#"-s EXPORTED_FUNCTIONS='[\"_main\"]'"
         "-s EXTRA_EXPORTED_RUNTIME_METHODS='[\"ccall\", \"FS\"]'"
-        #"-s ASSERTIONS=2"
+	# "-s ASSERTIONS=2"
         #"-s STACK_OVERFLOW_CHECK=2"
-        #"-s FS_LOG=1"
+	#"-s FS_LOG=1"
     )
 
     target_compile_options(clang-eos PRIVATE
